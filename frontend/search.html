@@ -24,8 +24,7 @@
             </nav>
             <div class="header-actions">
                 <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
-                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar"
-                        style="width: 40px; height: 40px; border: 2px solid var(--primary);">
+                    <div class="avatar avatar-initials" style="width: 40px; height: 40px; border: 2px solid var(--primary);">JD</div>
                     <span id="navUserName">John Doe</span>
                 </a>
             </div>
@@ -67,11 +66,12 @@
         <section class="section animate-on-scroll" id="resultsSection">
             <div class="flex" style="justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h2 style="font-size: 1.5rem;" id="resultsTitle">Recommended Specialists</h2>
-                <span class="text-muted" id="resultsCount">Showing 24 results</span>
+                <span class="text-muted" id="resultsCount">Showing 8 results</span>
             </div>
 
             <div class="card-grid" id="searchResultsGrid">
-                <a href="doctor-details.html" class="card" style="text-decoration: none; display: block; padding: 0;">
+                <a href="doctor-details.html" class="card" data-location="ny"
+                    style="text-decoration: none; display: block; padding: 0;">
                     <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400&h=300"
                         alt="Doctor"
                         style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
@@ -84,12 +84,15 @@
                             <span class="text-muted">&bull; 124 Reviews</span>
                             <span class="text-muted">&bull; 1.2mi</span>
                         </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Next available: Today 5:30 PM &bull; In
+                            network: Aetna, Cigna</p>
                         <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
                             Availability</div>
                     </div>
                 </a>
 
-                <a href="#" class="card" style="text-decoration: none; display: block; padding: 0;">
+                <a href="doctor-details.html" class="card" data-location="ca"
+                    style="text-decoration: none; display: block; padding: 0;">
                     <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400&h=300"
                         alt="Doctor"
                         style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
@@ -102,12 +105,15 @@
                             <span class="text-muted">&bull; 89 Reviews</span>
                             <span class="text-muted">&bull; 3.0mi</span>
                         </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Virtual + In-person &bull; Speaks: English,
+                            Mandarin</p>
                         <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
                             Availability</div>
                     </div>
                 </a>
 
-                <a href="#" class="card" style="text-decoration: none; display: block; padding: 0;">
+                <a href="doctor-details.html" class="card" data-location="tx"
+                    style="text-decoration: none; display: block; padding: 0;">
                     <img src="https://images.unsplash.com/photo-1594824432258-f9116e036e78?auto=format&fit=crop&q=80&w=400&h=300"
                         alt="Doctor"
                         style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
@@ -120,6 +126,113 @@
                             <span class="text-muted">&bull; 213 Reviews</span>
                             <span class="text-muted">&bull; 4.5mi</span>
                         </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Child wellness & vaccinations &bull; Next
+                            slot: Tomorrow 9:00 AM</p>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="doctor-details.html" class="card" data-location="ny"
+                    style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Robert Patel</h3>
+                        <p class="text-primary font-weight-600 mb-2">Orthopedic Surgeon, MS</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.7</span>
+                            <span class="text-muted">&bull; 164 Reviews</span>
+                            <span class="text-muted">&bull; 2.1mi</span>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Sports injury, joint pain &bull; In-person
+                            only</p>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="doctor-details.html" class="card" data-location="ca"
+                    style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1559839734-87f46c8d74f2?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Olivia Martinez</h3>
+                        <p class="text-primary font-weight-600 mb-2">Endocrinologist, MD</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.9</span>
+                            <span class="text-muted">&bull; 140 Reviews</span>
+                            <span class="text-muted">&bull; 5.2mi</span>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Diabetes and thyroid care &bull; Virtual
+                            follow-ups</p>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="doctor-details.html" class="card" data-location="tx"
+                    style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1612531386530-97286d97c2d2?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Ahmed Khan</h3>
+                        <p class="text-primary font-weight-600 mb-2">Neurologist, DM</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.8</span>
+                            <span class="text-muted">&bull; 98 Reviews</span>
+                            <span class="text-muted">&bull; 3.8mi</span>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Migraine, sleep disorders &bull; New
+                            patients accepted</p>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="doctor-details.html" class="card" data-location="ny"
+                    style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Hannah Brooks</h3>
+                        <p class="text-primary font-weight-600 mb-2">Psychiatrist, MD</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.9</span>
+                            <span class="text-muted">&bull; 176 Reviews</span>
+                            <span class="text-muted">&bull; 2.4mi</span>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Anxiety, stress, insomnia &bull; Evening
+                            telehealth slots</p>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="doctor-details.html" class="card" data-location="ca"
+                    style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. James Wilson</h3>
+                        <p class="text-primary font-weight-600 mb-2">General Physician, MD</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.6</span>
+                            <span class="text-muted">&bull; 240 Reviews</span>
+                            <span class="text-muted">&bull; 1.8mi</span>
+                        </div>
+                        <p class="text-muted mb-2" style="font-size: 0.82rem;">Primary care, annual exams &bull; Same-day
+                            appointments</p>
                         <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
                             Availability</div>
                     </div>

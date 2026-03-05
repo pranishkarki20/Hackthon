@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - MedCare</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-cross"></i></div>
+                MedCare
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="search.html">Find Doctors</a>
+                <a href="dashboard.html">Patient Dashboard</a>
+                <a href="doctor-dashboard.html" class="active">Doctor Dashboard</a>
+            </nav>
+            <div class="header-actions">
+                <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
+                    <div class="avatar avatar-initials" style="width: 40px; height: 40px;">
+                        <i class="ph-fill ph-user"></i>
+                    </div>
+                    <span>Dr. Priya Sharma</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="dot-pattern"></div>
+
+        <div class="dashboard-header animate-on-scroll">
+            <div>
+                <h1 style="font-size: 2.3rem; margin-bottom: 0.5rem;">Doctor Command Center</h1>
+                <p class="section-subtitle">Manage patient data, prescriptions, and live consultations from one place.</p>
+            </div>
+            <button class="btn btn-primary" data-action="doctor-new-slot">
+                <i class="ph-bold ph-plus"></i> Add Consultation Slot
+            </button>
+        </div>
+
+        <div class="stat-grid animate-on-scroll">
+            <div class="stat-card stat-primary">
+                <div class="stat-icon"><i class="ph-fill ph-users-three"></i></div>
+                <div class="stat-info">
+                    <h3>32</h3>
+                    <p class="text-muted">Total Patients</p>
+                </div>
+            </div>
+            <div class="stat-card stat-success">
+                <div class="stat-icon"><i class="ph-fill ph-video-camera"></i></div>
+                <div class="stat-info">
+                    <h3>6</h3>
+                    <p class="text-muted">Video Calls Today</p>
+                </div>
+            </div>
+            <div class="stat-card stat-warning">
+                <div class="stat-icon"><i class="ph-fill ph-pill"></i></div>
+                <div class="stat-info">
+                    <h3 id="doctorPendingRxCount">7</h3>
+                    <p class="text-muted">Pending Prescriptions</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #F3E8FF; color: #7C3AED;"><i class="ph-fill ph-clock"></i></div>
+                <div class="stat-info">
+                    <h3>4</h3>
+                    <p class="text-muted">Upcoming Consults</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="main-content">
+                <section class="mb-6 animate-on-scroll">
+                    <div class="flex" style="justify-content: space-between; margin-bottom: 1.25rem;">
+                        <h2 class="section-title" style="margin: 0; font-size: 1.6rem;">Patients Data</h2>
+                        <input id="doctorPatientSearch" type="text" class="form-input"
+                            placeholder="Search patient by name, condition, age..." style="max-width: 320px;">
+                    </div>
+
+                    <div class="doctor-table-wrap">
+                        <table class="doctor-table" aria-label="Patients data table">
+                            <thead>
+                                <tr>
+                                    <th>Patient</th>
+                                    <th>Age</th>
+                                    <th>Condition</th>
+                                    <th>Last Visit</th>
+                                    <th>Vitals</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="doctorPatientsTable">
+                                <tr data-patient-row>
+                                    <td>John Doe</td>
+                                    <td>45</td>
+                                    <td>Hypertension</td>
+                                    <td>2026-03-02</td>
+                                    <td>BP 130/85</td>
+                                    <td><button class="btn btn-outline btn-sm" data-action="open-patient-record">Open</button></td>
+                                </tr>
+                                <tr data-patient-row>
+                                    <td>Emma Wilson</td>
+                                    <td>32</td>
+                                    <td>Migraine</td>
+                                    <td>2026-03-04</td>
+                                    <td>Pulse 78 bpm</td>
+                                    <td><button class="btn btn-outline btn-sm" data-action="open-patient-record">Open</button></td>
+                                </tr>
+                                <tr data-patient-row>
+                                    <td>Noah Martinez</td>
+                                    <td>12</td>
+                                    <td>Seasonal Asthma</td>
+                                    <td>2026-03-01</td>
+                                    <td>SpO2 98%</td>
+                                    <td><button class="btn btn-outline btn-sm" data-action="open-patient-record">Open</button></td>
+                                </tr>
+                                <tr data-patient-row>
+                                    <td>Amelia Brown</td>
+                                    <td>58</td>
+                                    <td>Type 2 Diabetes</td>
+                                    <td>2026-02-27</td>
+                                    <td>HbA1c 7.1%</td>
+                                    <td><button class="btn btn-outline btn-sm" data-action="open-patient-record">Open</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="animate-on-scroll">
+                    <h2 class="section-title" style="margin-bottom: 1.25rem; font-size: 1.6rem;">Today's Video Consultations</h2>
+
+                    <div class="list-card">
+                        <div class="list-info">
+                            <div class="avatar avatar-initials">JD</div>
+                            <div class="list-text">
+                                <h4>John Doe</h4>
+                                <p><i class="ph ph-calendar"></i> 11:30 AM &bull; Follow-up (Blood Pressure)</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" data-action="start-doctor-call"><i class="ph-fill ph-video-camera"></i>
+                            Start Video Call</button>
+                    </div>
+
+                    <div class="list-card">
+                        <div class="list-info">
+                            <div class="avatar avatar-initials">EW</div>
+                            <div class="list-text">
+                                <h4>Emma Wilson</h4>
+                                <p><i class="ph ph-calendar"></i> 1:00 PM &bull; Headache Evaluation</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" data-action="start-doctor-call"><i class="ph-fill ph-video-camera"></i>
+                            Start Video Call</button>
+                    </div>
+                </section>
+            </div>
+
+            <div class="sidebar animate-on-scroll">
+                <div class="sidebar-widget">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Prescribed Medicines</h3>
+                    <div class="list-card" style="margin-bottom: 0.75rem;">
+                        <div class="list-info" style="gap: 0.8rem;">
+                            <div class="avatar avatar-initials"><i class="ph-fill ph-pill"></i></div>
+                            <div class="list-text">
+                                <h4 style="font-size: 1rem;">Amlodipine 5mg</h4>
+                                <p>John Doe &bull; 30-day refill</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" data-action="doctor-approve-rx">Approve</button>
+                    </div>
+
+                    <div class="list-card" style="margin-bottom: 0.75rem;">
+                        <div class="list-info" style="gap: 0.8rem;">
+                            <div class="avatar avatar-initials"><i class="ph-fill ph-pill"></i></div>
+                            <div class="list-text">
+                                <h4 style="font-size: 1rem;">Sumatriptan 50mg</h4>
+                                <p>Emma Wilson &bull; PRN migraine</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" data-action="doctor-approve-rx">Approve</button>
+                    </div>
+
+                    <div class="list-card">
+                        <div class="list-info" style="gap: 0.8rem;">
+                            <div class="avatar avatar-initials"><i class="ph-fill ph-pill"></i></div>
+                            <div class="list-text">
+                                <h4 style="font-size: 1rem;">Metformin 500mg</h4>
+                                <p>Amelia Brown &bull; Daily dose</p>
+                            </div>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" data-action="doctor-approve-rx">Approve</button>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget mt-6">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Availability</h3>
+                    <div class="flex align-center" style="justify-content: space-between;">
+                        <span class="text-muted">Accept new patients</span>
+                        <button id="doctorAvailabilityBtn" class="btn btn-primary btn-sm">ON</button>
+                    </div>
+                    <p class="text-muted" style="margin-top: 0.75rem;">Next slot: Today, 4:30 PM</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

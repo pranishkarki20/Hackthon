@@ -29,6 +29,7 @@ window.showToast = function (message, type = 'success') {
     // Animate in
     setTimeout(() => toast.classList.add('show'), 100);
 
+
     // Auto remove
     setTimeout(() => {
         toast.classList.remove('show');
@@ -36,11 +37,124 @@ window.showToast = function (message, type = 'success') {
     }, 4000);
 };
 
+// Global Custom Confirm Modal Function
+window.customConfirm = function (options = {}) {
+    return new Promise((resolve) => {
+        const {
+            title = 'Are you sure?',
+            message = 'This action cannot be undone.',
+            confirmText = 'Confirm',
+            cancelText = 'Cancel',
+            type = 'warning' // warning, danger, info
+        } = options;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'modal-overlay';
+
+        let icon = 'ph-fill ph-warning-circle';
+        let iconClass = 'modal-icon-warning';
+        let btnClass = 'modal-btn-confirm';
+
+        if (type === 'danger') {
+            icon = 'ph-fill ph-trash';
+            iconClass = 'modal-icon-danger';
+            btnClass = 'modal-btn-danger';
+        } else if (type === 'info') {
+            icon = 'ph-fill ph-info';
+            iconClass = 'modal-icon-info';
+        }
+
+        overlay.innerHTML = `
+            <div class="modal-container">
+                <div class="modal-icon ${iconClass}">
+                    <i class="${icon}"></i>
+                </div>
+                <h3 class="modal-title">${title}</h3>
+                <p class="modal-message">${message}</p>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-cancel">${cancelText}</button>
+                    <button class="modal-btn ${btnClass}">${confirmText}</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Trigger animation
+        setTimeout(() => overlay.classList.add('show'), 10);
+
+        const close = (result) => {
+            overlay.classList.remove('show');
+            setTimeout(() => {
+                overlay.remove();
+                resolve(result);
+            }, 400);
+        };
+
+        const cancelBtn = overlay.querySelector('.modal-btn-cancel');
+        const confirmBtn = overlay.querySelector(`.${btnClass}`);
+
+        cancelBtn.addEventListener('click', () => close(false));
+        confirmBtn.addEventListener('click', () => close(true));
+
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                const container = overlay.querySelector('.modal-container');
+                container.classList.add('pulse');
+                setTimeout(() => container.classList.remove('pulse'), 400);
+            }
+        });
+    });
+};
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Route guard for unknown local .html paths
+    const knownPages = new Set([
+        '',
+        'index.html',
+        '404.html',
+        'dashboard.html',
+        'doctor-dashboard.html',
+        'doctor-details.html',
+        'figma.html',
+        'login.html',
+        'profile.html',
+        'records.html',
+        'search.html',
+        'signup.html'
+    ]);
+    const currentPath = window.location.pathname || '';
+    const currentFile = currentPath.split('/').pop() || '';
+    if (currentFile && !knownPages.has(currentFile)) {
+        const target = `404.html?from=${encodeURIComponent(currentPath)}`;
+        window.location.replace(target);
+        return;
+    }
+
     // redirect from login page if already authenticated
     if (window.location.pathname.endsWith('login.html') && localStorage.getItem('medcareLoggedIn') === 'true') {
         window.location.href = 'dashboard.html';
         return; // don't execute further scripts
+    }
+
+    // 404 page helpers
+    if (window.location.pathname.endsWith('404.html')) {
+        const missingPathText = document.getElementById('missingPathText');
+        const goBackBtn = document.getElementById('goBack404Btn');
+        const params = new URLSearchParams(window.location.search);
+        const fromPath = params.get('from');
+
+        if (missingPathText && fromPath) {
+            missingPathText.textContent = `Requested path: ${decodeURIComponent(fromPath)}`;
+        }
+
+        if (goBackBtn) {
+            goBackBtn.addEventListener('click', () => {
+                if (window.history.length > 1) window.history.back();
+                else window.location.href = 'index.html';
+            });
+        }
     }
 
     // 0. Creative Global Mouse Tracker
@@ -199,6 +313,52 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 3b. Mobile nav toggle
+    function initMobileNavToggle() {
+        const content = document.querySelector('.header-content');
+        const nav = content?.querySelector('nav');
+        if (!content || !nav) return;
+
+        let toggleBtn = content.querySelector('.nav-toggle');
+        if (!toggleBtn) {
+            toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'nav-toggle';
+            toggleBtn.setAttribute('aria-label', 'Toggle navigation menu');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.innerHTML = '<i class="ph-bold ph-list"></i>';
+            content.insertBefore(toggleBtn, content.querySelector('.header-actions') || null);
+        }
+
+        const closeNav = () => {
+            nav.classList.remove('is-open');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            toggleBtn.innerHTML = '<i class="ph-bold ph-list"></i>';
+        };
+
+        toggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const open = nav.classList.toggle('is-open');
+            toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            toggleBtn.innerHTML = open ? '<i class="ph-bold ph-x"></i>' : '<i class="ph-bold ph-list"></i>';
+        });
+
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) closeNav();
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!content.contains(e.target)) closeNav();
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) closeNav();
+        });
+    }
+    initMobileNavToggle();
 
     // 4. UX Enhancements: smooth section scroll, form validation, password strength
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -432,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
             // Hide Dashboard, Profile, and Find Doctors (search.html) if not logged in
-            if (href === 'dashboard.html' || href === 'profile.html' || href === 'search.html') {
+            if (href === 'dashboard.html' || href === 'doctor-dashboard.html' || href === 'profile.html' || href === 'search.html') {
                 link.style.display = isLoggedIn() ? '' : 'none';
             }
 
@@ -466,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headerActions.className = 'header-actions'; // reset class, remove flex gap-4
                     headerActions.innerHTML = `
                         <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar" style="width: 40px; height: 40px; border: 2px solid var(--primary);">
+                            <div class="avatar avatar-initials" style="width: 40px; height: 40px; border: 2px solid var(--primary);">JD</div>
                             <span id="navUserName">${user.fname} ${user.lname}</span>
                         </a>
                     `;
@@ -504,7 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // redirect unauthenticated users away from restricted pages
-    const restrictedPages = ['dashboard.html', 'profile.html', 'search.html', 'doctor-details.html'];
+    const restrictedPages = ['dashboard.html', 'doctor-dashboard.html', 'profile.html', 'search.html', 'doctor-details.html'];
     if (restrictedPages.some(page => window.location.pathname.endsWith(page)) && !isLoggedIn()) {
         window.location.href = 'login.html';
     }
@@ -576,13 +736,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // 7. Handle Profile Update
     const profileForm = document.getElementById('profileForm');
     if (profileForm) {
-        profileForm.addEventListener('submit', (e) => {
+        profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!validateFormWithInlineFeedback(profileForm)) {
                 showToast('Please correct invalid profile fields.', 'error');
                 return;
             }
-            if (!window.confirm('Confirm update? Save these profile changes now?')) return;
+            const confirmed = await window.customConfirm({
+                title: 'Save Changes?',
+                message: 'Are you sure you want to update your profile details?',
+                confirmText: 'Save Profile',
+                type: 'info'
+            });
+            if (!confirmed) return;
             const submitBtn = profileForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
 
@@ -649,9 +815,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    function initFabMenu() {
+        if (document.querySelector('.fab-menu')) return;
+        const fab = document.createElement('div');
+        fab.className = 'fab-menu';
+        fab.innerHTML = `
+            <div class="fab-items">
+                <button class="fab-item" data-fab-action="book">Book Visit</button>
+                <button class="fab-item" data-fab-action="profile">Profile</button>
+                <button class="fab-item" data-fab-action="support">Support</button>
+                <button class="fab-item" data-fab-action="top">Top</button>
+            </div>
+            <button class="fab-main" type="button" aria-label="Quick actions">+</button>
+        `;
+        document.body.appendChild(fab);
+
+        const mainButton = fab.querySelector('.fab-main');
+        mainButton?.addEventListener('click', () => {
+            fab.classList.toggle('is-open');
+        });
+
+        fab.addEventListener('click', (e) => {
+            const actionNode = e.target.closest('[data-fab-action]');
+            if (!actionNode) return;
+            const action = actionNode.getAttribute('data-fab-action');
+            if (action === 'book') {
+                document.body.classList.add('page-exit');
+                setTimeout(() => { window.location.href = 'search.html'; }, 250);
+            }
+            if (action === 'profile') {
+                document.body.classList.add('page-exit');
+                setTimeout(() => { window.location.href = 'profile.html'; }, 250);
+            }
+            if (action === 'support') {
+                showToast('Support is on standby. We will connect shortly.', 'success');
+            }
+            if (action === 'top') {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            fab.classList.remove('is-open');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.fab-menu')) fab.classList.remove('is-open');
+        });
+    }
+
     // 9. Dashboard Interactivity
     if (window.location.pathname.endsWith('dashboard.html')) {
         const DASHBOARD_STATE_KEY = 'medcareDashboardState';
+        const DASHBOARD_RATING_KEY = 'medcareDashboardRating';
 
         function getDashboardState() {
             const fallback = {
@@ -695,7 +908,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         function updateAppointmentsEmptyState() {
-            const appointmentsSection = document.querySelector('.main-content section');
+            const appointmentsSection = document.getElementById('panel-upcoming');
             if (!appointmentsSection) return;
             const appointmentCards = appointmentsSection.querySelectorAll('.list-card');
             const hasExistingEmpty = appointmentsSection.querySelector('[data-role="appointments-empty"]');
@@ -718,6 +931,139 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        function updateCareJourneyProgress() {
+            const fillNode = document.getElementById('careStepProgressFill');
+            const textNode = document.getElementById('careStepProgressText');
+            const stepNodes = document.querySelectorAll('.step-item');
+            if (!fillNode || !textNode || stepNodes.length === 0) return;
+
+            const state = getDashboardState();
+            const appointmentCount = document.querySelectorAll('#panel-upcoming .list-card:not([data-role="appointments-empty"])').length;
+            const hydrationDone = state.waterIntake >= state.waterGoal;
+            const medsDone = Object.values(state.meds).every(Boolean);
+
+            const stepState = {
+                profile: true,
+                appointment: appointmentCount > 0,
+                hydration: hydrationDone,
+                medication: medsDone
+            };
+
+            let completed = 0;
+            stepNodes.forEach(node => {
+                const key = node.getAttribute('data-step');
+                const isComplete = Boolean(stepState[key]);
+                node.classList.toggle('is-complete', isComplete);
+                if (isComplete) completed += 1;
+            });
+
+            fillNode.style.width = `${(completed / 4) * 100}%`;
+            textNode.textContent = `Step ${completed} of 4 completed`;
+        }
+
+        function initDashboardTabs() {
+            const tabButtons = document.querySelectorAll('.tab-btn[data-tab-target]');
+            const panels = document.querySelectorAll('.tab-panel[data-tab-panel]');
+            if (tabButtons.length === 0 || panels.length === 0) return;
+
+            const showPanel = (target) => {
+                tabButtons.forEach(btn => {
+                    const active = btn.getAttribute('data-tab-target') === target;
+                    btn.classList.toggle('is-active', active);
+                    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+                });
+                panels.forEach(panel => {
+                    panel.classList.toggle('is-active', panel.getAttribute('data-tab-panel') === target);
+                });
+            };
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => showPanel(btn.getAttribute('data-tab-target')));
+            });
+        }
+
+        function initInteractiveChart() {
+            const chartNode = document.getElementById('visitsChart');
+            const metaNode = document.getElementById('visitsChartMeta');
+            const rangeButtons = document.querySelectorAll('.chart-range-btn');
+            if (!chartNode || !metaNode || rangeButtons.length === 0) return;
+
+            const dataSets = {
+                '7d': {
+                    labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+                    values: [4, 6, 5, 8, 7, 9, 6]
+                },
+                '30d': {
+                    labels: ['W1', 'W2', 'W3', 'W4'],
+                    values: [28, 33, 30, 36]
+                }
+            };
+
+            const render = (range) => {
+                const selected = dataSets[range] || dataSets['7d'];
+                const max = Math.max(...selected.values, 1);
+                chartNode.innerHTML = '';
+
+                selected.values.forEach((value, index) => {
+                    const bar = document.createElement('button');
+                    bar.type = 'button';
+                    bar.className = 'mini-chart-bar';
+                    bar.style.height = `${(value / max) * 100}%`;
+                    bar.setAttribute('data-label', selected.labels[index]);
+                    bar.setAttribute('aria-label', `${selected.labels[index]} value ${value}`);
+                    bar.addEventListener('click', () => {
+                        chartNode.querySelectorAll('.mini-chart-bar').forEach(n => n.classList.remove('is-selected'));
+                        bar.classList.add('is-selected');
+                        metaNode.textContent = `${selected.labels[index]}: ${value} wellness actions completed.`;
+                    });
+                    chartNode.appendChild(bar);
+                });
+
+                const first = chartNode.querySelector('.mini-chart-bar');
+                if (first) first.click();
+            };
+
+            rangeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    rangeButtons.forEach(b => b.classList.remove('is-active'));
+                    btn.classList.add('is-active');
+                    render(btn.getAttribute('data-range') || '7d');
+                });
+            });
+
+            render('7d');
+        }
+
+        function initRatingSystem() {
+            const stars = document.querySelectorAll('.rating-star');
+            const statusNode = document.getElementById('ratingStatus');
+            if (stars.length === 0 || !statusNode) return;
+
+            const setRating = (value) => {
+                stars.forEach(star => {
+                    const starValue = Number(star.getAttribute('data-rating-value') || 0);
+                    star.classList.toggle('is-active', starValue <= value);
+                });
+                if (value > 0) {
+                    statusNode.textContent = `You rated ${value}/5. Thanks for your feedback.`;
+                } else {
+                    statusNode.textContent = 'No rating submitted yet.';
+                }
+            };
+
+            const saved = Number(localStorage.getItem(DASHBOARD_RATING_KEY) || 0);
+            if (saved > 0) setRating(saved);
+
+            stars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const value = Number(star.getAttribute('data-rating-value') || 0);
+                    localStorage.setItem(DASHBOARD_RATING_KEY, String(value));
+                    setRating(value);
+                    showToast('Rating saved. Thank you!', 'success');
+                });
+            });
+        }
+
         function hydrateHealthGoalWidgets() {
             const state = getDashboardState();
             const waterCountNode = document.getElementById('waterIntakeCount');
@@ -732,8 +1078,12 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        initDashboardTabs();
+        initInteractiveChart();
+        initRatingSystem();
         hydrateHealthGoalWidgets();
         updateAppointmentsEmptyState();
+        updateCareJourneyProgress();
 
         const addWaterBtn = document.getElementById('addWaterBtn');
         if (addWaterBtn) {
@@ -747,6 +1097,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.waterIntake += 1;
                 setDashboardState(state);
                 hydrateHealthGoalWidgets();
+                updateCareJourneyProgress();
 
                 if (state.waterIntake === state.waterGoal) {
                     showToast('Nice work! Daily hydration goal reached.', 'success');
@@ -761,6 +1112,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.waterIntake = 0;
                 setDashboardState(state);
                 hydrateHealthGoalWidgets();
+                updateCareJourneyProgress();
                 showToast('Water intake reset for today.', 'warning');
             });
         }
@@ -771,6 +1123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const key = check.getAttribute('data-med');
                 state.meds[key] = check.checked;
                 setDashboardState(state);
+                updateCareJourneyProgress();
 
                 const doneCount = Object.values(state.meds).filter(Boolean).length;
                 if (doneCount === 3) {
@@ -779,14 +1132,21 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        document.addEventListener('click', (e) => {
+        document.addEventListener('click', async (e) => {
             const actionNode = e.target.closest('[data-action]');
             if (!actionNode) return;
 
             const action = actionNode.getAttribute('data-action');
 
             if (action === 'cancel-appointment') {
-                if (!window.confirm('Delete this appointment? This action cannot be undone.')) return;
+                const confirmed = await window.customConfirm({
+                    title: 'Cancel Appointment?',
+                    message: 'Are you sure? This appointment will be removed from your records.',
+                    confirmText: 'Cancel Appointment',
+                    type: 'danger'
+                });
+                if (!confirmed) return;
+
                 const originalContent = actionNode.innerHTML;
                 actionNode.innerHTML = '<span class="loading" style="border-top-color: var(--text-main);"></span> Canceling...';
                 actionNode.disabled = true;
@@ -801,6 +1161,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             setStatCount('statTotalAppts', parseStatCount('statTotalAppts') - 1);
                             setStatCount('statUpcomingAppts', parseStatCount('statUpcomingAppts') - 1);
                             updateAppointmentsEmptyState();
+                            updateCareJourneyProgress();
                             showToast('Appointment canceled successfully.', 'success');
                         }, 300);
                     } else {
@@ -825,7 +1186,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (action === 'reschedule-appointment') {
-                if (!window.confirm('Send update request to reschedule this appointment?')) return;
+                const confirmed = await window.customConfirm({
+                    title: 'Reschedule Request',
+                    message: 'Send an update request to your provider for this appointment?',
+                    confirmText: 'Send Request',
+                    type: 'info'
+                });
+                if (!confirmed) return;
+
                 actionNode.innerHTML = '<i class="ph-bold ph-check"></i> Request Sent';
                 actionNode.disabled = true;
                 showToast('Reschedule request sent to clinic.', 'success');
@@ -897,6 +1265,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const resultsTitle = document.getElementById('resultsTitle');
         const resultsCount = document.getElementById('resultsCount');
         const filterBadges = document.querySelectorAll('.filter-badge');
+        const cardMatchesFilters = (card, query, locStr) => {
+            const text = card.textContent.toLowerCase();
+            const cardLocation = (card.getAttribute('data-location') || '').toLowerCase();
+            const queryMatches = !query || text.includes(query);
+            const locationMatches = !locStr || cardLocation === locStr.toLowerCase();
+            return queryMatches && locationMatches;
+        };
 
         function simulateSearch(queryStr, locStr) {
             resultsGrid.style.opacity = '0';
@@ -909,8 +1284,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 let matchCount = 0;
 
                 cards.forEach(card => {
-                    const text = card.textContent.toLowerCase();
-                    if (text.includes(query)) {
+                    if (cardMatchesFilters(card, query, locStr)) {
                         card.style.display = 'block';
                         matchCount++;
                     } else {
@@ -934,8 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let matchCount = 0;
 
             cards.forEach(card => {
-                const text = card.textContent.toLowerCase();
-                if (text.includes(query)) {
+                if (cardMatchesFilters(card, query, locStr)) {
                     card.style.display = 'block';
                     matchCount++;
                 } else {
@@ -1019,6 +1392,83 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // 10b. Doctor Dashboard Interactivity
+    if (window.location.pathname.endsWith('doctor-dashboard.html')) {
+        const patientSearch = document.getElementById('doctorPatientSearch');
+        const patientRows = document.querySelectorAll('#doctorPatientsTable [data-patient-row]');
+        const availabilityBtn = document.getElementById('doctorAvailabilityBtn');
+        const pendingRxCountNode = document.getElementById('doctorPendingRxCount');
+
+        if (patientSearch) {
+            patientSearch.addEventListener('input', () => {
+                const query = patientSearch.value.trim().toLowerCase();
+                patientRows.forEach(row => {
+                    const rowText = row.textContent.toLowerCase();
+                    row.style.display = !query || rowText.includes(query) ? '' : 'none';
+                });
+            });
+        }
+
+        if (availabilityBtn) {
+            availabilityBtn.addEventListener('click', () => {
+                const isOn = availabilityBtn.textContent.trim().toUpperCase() === 'ON';
+                availabilityBtn.textContent = isOn ? 'OFF' : 'ON';
+                availabilityBtn.style.background = isOn ? '#64748B' : '';
+                showToast(`Availability turned ${isOn ? 'OFF' : 'ON'}.`, 'success');
+            });
+        }
+
+        document.addEventListener('click', async (e) => {
+            const actionNode = e.target.closest('[data-action]');
+            if (!actionNode) return;
+            const action = actionNode.getAttribute('data-action');
+
+            if (action === 'start-doctor-call') {
+                const original = actionNode.innerHTML;
+                actionNode.innerHTML = '<span class="loading" style="border-top-color: white;"></span> Connecting...';
+                actionNode.disabled = true;
+                setTimeout(() => {
+                    actionNode.innerHTML = '<i class="ph-fill ph-video-camera"></i> In Call';
+                    actionNode.style.background = '#10B981';
+                    setTimeout(() => {
+                        actionNode.innerHTML = original;
+                        actionNode.disabled = false;
+                        actionNode.style.background = '';
+                    }, 2500);
+                }, 900);
+            }
+
+            if (action === 'doctor-approve-rx') {
+                const confirmed = await window.customConfirm({
+                    title: 'Approve Prescription?',
+                    message: 'This action will authorize the medication for the patient.',
+                    confirmText: 'Approve Now',
+                    type: 'info'
+                });
+                if (!confirmed) return;
+
+                actionNode.innerHTML = '<i class="ph-bold ph-check"></i> Approved';
+                actionNode.disabled = true;
+                actionNode.style.background = 'var(--secondary-light)';
+                actionNode.style.color = 'var(--secondary-dark)';
+                actionNode.style.borderColor = 'var(--secondary-light)';
+
+                const current = parseInt(pendingRxCountNode?.textContent || '0', 10);
+                if (pendingRxCountNode && Number.isFinite(current) && current > 0) {
+                    pendingRxCountNode.textContent = String(current - 1);
+                }
+            }
+
+            if (action === 'open-patient-record') {
+                showToast('Opening patient record summary...', 'success');
+            }
+
+            if (action === 'doctor-new-slot') {
+                showToast('New consultation slot added to your schedule.', 'success');
+            }
+        });
+    }
+
     // 11. Typing Animation for Hero H1
     const typingSpan = document.getElementById('typing-text');
     if (typingSpan) {
@@ -1056,73 +1506,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(type, 1000);
     }
 
-    // 12. Interactive Tabs
-    document.querySelectorAll('.tab-link').forEach(tab => {
-        tab.addEventListener('click', () => {
-            const container = tab.closest('.tabs-container');
-            const targetId = tab.getAttribute('data-tab');
-
-            // Reset tabs
-            container.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
-            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-
-            // Activate target
-            tab.classList.add('active');
-            const target = container.querySelector(`#${targetId}`);
-            if (target) target.classList.add('active');
-        });
-    });
-
-    // 13. Interactive Rating
-    document.querySelectorAll('.rating-star').forEach(star => {
-        star.addEventListener('click', () => {
-            const index = star.getAttribute('data-index');
-            const parent = star.parentElement;
-
-            parent.querySelectorAll('.rating-star').forEach(s => {
-                const sIndex = s.getAttribute('data-index');
-                s.classList.toggle('ph-fill', sIndex <= index);
-                s.classList.toggle('ph', sIndex > index);
-                s.classList.toggle('active', sIndex <= index);
-            });
-
-            if (window.showToast) showToast(`Rated ${index} stars!`, 'success');
-        });
-    });
-
-    // 14. FAB Menu Toggle
-    const fabMain = document.querySelector('.fab-main');
-    if (fabMain) {
-        fabMain.addEventListener('click', () => {
-            fabMain.parentElement.classList.toggle('active');
-        });
-
-        // Close when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!fabMain.parentElement.contains(e.target)) {
-                fabMain.parentElement.classList.remove('active');
-            }
-        });
-    }
-
-    // 15. Mini Chart Animation
-    const charts = document.querySelectorAll('.chart-bar');
-    if (charts.length > 0) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const bar = entry.target;
-                    const h = bar.getAttribute('data-height');
-                    bar.style.height = h + '%';
-                    observer.unobserve(bar);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        charts.forEach(bar => observer.observe(bar));
-    }
-
     // run nav update each load
+    initFabMenu();
     updateNav();
     populateUserData();
 });

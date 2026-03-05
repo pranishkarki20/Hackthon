@@ -24,8 +24,7 @@
             </nav>
             <div class="header-actions">
                 <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
-                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar"
-                        style="width: 40px; height: 40px;">
+                    <div class="avatar avatar-initials" style="width: 40px; height: 40px;">JD</div>
                     <span id="navUserName">John Doe</span>
                 </a>
             </div>
@@ -80,7 +79,33 @@
 
         <div class="details-grid">
             <div class="main-content">
-                <section class="mb-6 animate-on-scroll">
+                <div class="tabs-nav animate-on-scroll" role="tablist" aria-label="Dashboard sections">
+                    <button class="tab-btn is-active" data-tab-target="insights" role="tab"
+                        aria-selected="true">Insights</button>
+                    <button class="tab-btn" data-tab-target="upcoming" role="tab" aria-selected="false">Appointments</button>
+                    <button class="tab-btn" data-tab-target="activity" role="tab" aria-selected="false">Activity</button>
+                    <button class="tab-btn" data-tab-target="goals" role="tab" aria-selected="false">Goals</button>
+                </div>
+
+                <section id="panel-insights" data-tab-panel="insights" class="tab-panel is-active mb-6 animate-on-scroll">
+                    <div class="card chart-card">
+                        <div class="chart-header">
+                            <h2 class="section-title" style="margin: 0; font-size: 1.75rem;">Interactive Health Trends
+                            </h2>
+                            <div class="chart-controls" role="group" aria-label="Chart range">
+                                <button class="chart-range-btn is-active" data-range="7d">7D</button>
+                                <button class="chart-range-btn" data-range="30d">30D</button>
+                            </div>
+                        </div>
+                        <p class="section-subtitle" style="margin-bottom: 1rem;">Track completed check-ins and wellness
+                            actions.</p>
+                        <div id="visitsChart" class="mini-chart" aria-label="Interactive chart"></div>
+                        <p id="visitsChartMeta" class="text-muted" style="margin-top: 0.75rem;">Click a bar to inspect
+                            details.</p>
+                    </div>
+                </section>
+
+                <section id="panel-upcoming" data-tab-panel="upcoming" class="tab-panel mb-6 animate-on-scroll">
                     <div class="flex" style="justify-content: space-between; margin-bottom: 2rem;">
                         <h2 class="section-title" style="margin: 0; font-size: 1.75rem;">Upcoming Appointments</h2>
                         <a href="#" class="btn btn-outline">View All</a>
@@ -88,8 +113,7 @@
 
                     <div class="list-card">
                         <div class="list-info">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026024d" alt="Dr. Sarah Johnson"
-                                class="avatar">
+                            <div class="avatar avatar-initials">SJ</div>
                             <div class="list-text">
                                 <h4>Dr. Sarah Johnson <i class="ph-fill ph-check-circle text-primary"></i></h4>
                                 <p>Cardiologist &bull; General Checkup</p>
@@ -109,8 +133,7 @@
 
                     <div class="list-card">
                         <div class="list-info">
-                            <img src="https://i.pravatar.cc/150?u=a042581f4e29026703d" alt="Dr. Michael Chen"
-                                class="avatar">
+                            <div class="avatar avatar-initials">MC</div>
                             <div class="list-text">
                                 <h4>Dr. Michael Chen</h4>
                                 <p>Dermatologist &bull; Skin Consultation</p>
@@ -124,7 +147,7 @@
                     </div>
                 </section>
 
-                <section class="animate-on-scroll">
+                <section id="panel-activity" data-tab-panel="activity" class="tab-panel animate-on-scroll">
                     <h2 class="section-title" style="margin-bottom: 2rem; font-size: 1.75rem;">Recent Activity</h2>
                     <div class="list-card">
                         <div class="list-info">
@@ -154,7 +177,7 @@
                     </div>
                 </section>
 
-                <section class="animate-on-scroll mt-6">
+                <section id="panel-goals" data-tab-panel="goals" class="tab-panel animate-on-scroll mt-6">
                     <h2 class="section-title" style="margin-bottom: 2rem; font-size: 1.75rem;">Daily Health Goals</h2>
                     <div class="list-card">
                         <div class="list-info">
@@ -245,6 +268,36 @@
                             </div>
                         </a>
                     </div>
+                </div>
+
+                <div class="sidebar-widget mt-6">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Care Plan Progress</h3>
+                    <div class="step-progress">
+                        <div class="step-progress-bar">
+                            <div id="careStepProgressFill" class="step-progress-fill" style="width: 25%;"></div>
+                        </div>
+                        <p id="careStepProgressText" class="text-muted" style="margin-top: 0.75rem;">Step 1 of 4 completed
+                        </p>
+                        <ul class="step-list">
+                            <li class="step-item is-complete" data-step="profile">Profile setup</li>
+                            <li class="step-item" data-step="appointment">Book appointment</li>
+                            <li class="step-item" data-step="hydration">Hydration goal</li>
+                            <li class="step-item" data-step="medication">Medication checklist</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget mt-6">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.25rem;">Rate Experience</h3>
+                    <p class="text-muted" style="margin-bottom: 0.75rem;">How would you rate MedCare today?</p>
+                    <div class="rating-stars" aria-label="Rate experience">
+                        <button class="rating-star" data-rating-value="1" aria-label="1 star">&#9733;</button>
+                        <button class="rating-star" data-rating-value="2" aria-label="2 stars">&#9733;</button>
+                        <button class="rating-star" data-rating-value="3" aria-label="3 stars">&#9733;</button>
+                        <button class="rating-star" data-rating-value="4" aria-label="4 stars">&#9733;</button>
+                        <button class="rating-star" data-rating-value="5" aria-label="5 stars">&#9733;</button>
+                    </div>
+                    <p id="ratingStatus" class="text-muted" style="margin-top: 0.75rem;">No rating submitted yet.</p>
                 </div>
             </div>
         </div>

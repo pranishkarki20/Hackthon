@@ -8,7 +8,8 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +22,15 @@
         <!-- HEADER -->
         <header class="navbar">
             <div class="logo">
-                <i class="fa-solid fa-motorcycle logo-icon"></i>
+                <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="10" cy="15" r="5" stroke="#319e95" stroke-width="3" fill="none" />
+                    <circle cx="30" cy="15" r="5" stroke="#319e95" stroke-width="3" fill="none" />
+                    <path d="M15 15 L25 15" stroke="#319e95" stroke-width="3" stroke-linecap="round" />
+                    <path d="M10 10 L15 5 L20 5" stroke="#319e95" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M25 15 L30 5 L35 5" stroke="#319e95" stroke-width="3" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
             </div>
             <nav class="nav-links">
                 <a href="#home">HOME</a>
@@ -36,6 +45,8 @@
 
         <!-- HERO SECTION -->
         <section class="hero" id="home">
+            <div class="hero-bg-layer"></div>
+
             <div class="hero-decorative-spheres">
                 <div class="sphere sphere-1"></div>
                 <div class="sphere sphere-2"></div>
@@ -47,30 +58,46 @@
                     <h3 class="hero-subtitle">L E T ' S &nbsp; R I D E &nbsp; T H E</h3>
                     <h1 class="hero-title">FUTURE</h1>
                     <p class="hero-desc">Simple and sleek design with users in mind.</p>
-                    <button class="btn btn-teal-pill btn-preorder">PRE-ORDER</button>
+                    <button class="btn btn-preorder">PRE-ORDER</button>
 
-                    <div class="slider-container">
-                        <button class="slider-arrow"><i class="fa-solid fa-chevron-left"></i> Prev</button>
+                    <div class="slider-controls">
+                        <button class="slider-arrow arrow-left"><i class="fa-solid fa-chevron-left"></i> Prev</button>
                         <div class="slider-dots">
                             <span class="dot"></span>
                             <span class="dot active"></span>
                             <span class="dot"></span>
                             <span class="dot"></span>
                         </div>
-                        <button class="slider-arrow">Next <i class="fa-solid fa-chevron-right"></i></button>
+                        <button class="slider-arrow arrow-right">Next <i class="fa-solid fa-chevron-right"></i></button>
                     </div>
                 </div>
                 <div class="hero-image-wrapper">
-                    <img src="assets/scooter.png" alt="Black Modern Electric Scooter" class="hero-scooter" />
+                    <img src="assets/scooter.png" alt="Fat Tire Electric Scooter" class="hero-scooter" />
+                    <!-- Stats section -->
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">50 km/hr</span>
+                            <span class="stat-label">speed</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">80km</span>
+                            <span class="stat-label">battery range</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">3.5hr</span>
+                            <span class="stat-label">charging<br>time</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- WAVE DIVIDER -->
-        <div class="wave-divider">
-            <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                <path d="M0,50 C320,150 420,-50 1440,50 L1440,0 L0,0 Z" fill="#9CE7E2" opacity="0.3"></path>
-                <path d="M0,80 C400,180 600,-30 1440,80 L1440,0 L0,0 Z" fill="#D6F4F8"></path>
+        <div class="wave-divider" style="margin-top:-100px; height: 260px;">
+            <svg viewBox="0 0 1440 260" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                <!-- Extremely deep concave curve taking a large bite out of the center -->
+                <path d="M0,260 C380,-30 1060,-30 1440,260 L1440,280 L0,280 Z" fill="#b1e6e0" opacity="0.4"></path>
+                <path d="M0,280 C360,10 1080,10 1440,280 L1440,300 L0,300 Z" fill="#def4f8"></path>
             </svg>
         </div>
 
@@ -83,7 +110,9 @@
                     <p class="title-desc">Simple and sleek design with users in mind.</p>
                 </div>
                 <div class="map-image-container">
-                    <img src="assets/map.png" alt="Map Lines" class="line-map" />
+                    <img src="assets/map.png" alt="World Map" class="line-map" />
+                    <div class="map-loc-1"><i class="fa-solid fa-location-arrow"></i></div>
+                    <div class="map-loc-2"><i class="fa-solid fa-location-arrow"></i></div>
                 </div>
             </section>
 
@@ -96,25 +125,25 @@
                 </div>
                 <div class="features-grid">
                     <div class="feature-card">
+                        <div class="feature-icon"><i class="fa-solid fa-database"></i></div>
+                        <h4 class="feature-title">Fully Customizable</h4>
+                        <p class="feature-desc">A good design is not only aesthetically pleasing, but also functional.
+                            It should be able to solve the problem.</p>
+                    </div>
+                    <div class="feature-card">
                         <div class="feature-icon"><i class="fa-solid fa-layer-group"></i></div>
                         <h4 class="feature-title">Fully Customizable</h4>
                         <p class="feature-desc">A good design is not only aesthetically pleasing, but also functional.
                             It should be able to solve the problem.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon"><i class="fa-solid fa-cubes"></i></div>
+                        <div class="feature-icon"><i class="fa-solid fa-hammer"></i></div>
                         <h4 class="feature-title">Fully Customizable</h4>
                         <p class="feature-desc">A good design is not only aesthetically pleasing, but also functional.
                             It should be able to solve the problem.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon"><i class="fa-solid fa-paintbrush"></i></div>
-                        <h4 class="feature-title">Fully Customizable</h4>
-                        <p class="feature-desc">A good design is not only aesthetically pleasing, but also functional.
-                            It should be able to solve the problem.</p>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-icon"><i class="fa-solid fa-sliders"></i></div>
+                        <div class="feature-icon"><i class="fa-solid fa-cube"></i></div>
                         <h4 class="feature-title">Fully Customizable</h4>
                         <p class="feature-desc">A good design is not only aesthetically pleasing, but also functional.
                             It should be able to solve the problem.</p>
@@ -207,7 +236,15 @@
             <div class="footer-inner">
                 <div class="footer-brand">
                     <div class="logo-footer">
-                        <i class="fa-solid fa-motorcycle logo-icon"></i>
+                        <svg width="40" height="25" viewBox="0 0 40 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="10" cy="15" r="5" stroke="#111" stroke-width="3" fill="none" />
+                            <circle cx="30" cy="15" r="5" stroke="#111" stroke-width="3" fill="none" />
+                            <path d="M15 15 L25 15" stroke="#111" stroke-width="3" stroke-linecap="round" />
+                            <path d="M10 10 L15 5 L20 5" stroke="#111" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <path d="M25 15 L30 5 L35 5" stroke="#111" stroke-width="3" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
                     </div>
                     <p class="footer-desc">A good design is not only aesthetically pleasing, but also functional.</p>
                 </div>
