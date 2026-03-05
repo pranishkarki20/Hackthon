@@ -130,42 +130,6 @@
         </div>
     </main>
 
-    <script>
-        document.getElementById('profileForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const btn = this.querySelector('button[type="submit"]');
-            const originalHTML = btn.innerHTML;
-
-            btn.innerHTML = '<span class="loading" style="border-top-color: white;"></span> Saving...';
-            btn.disabled = true;
-
-            const updatedData = {
-                firstName: document.getElementById('profFirst').value,
-                lastName: document.getElementById('profLast').value,
-                email: document.getElementById('profEmail').value
-            };
-
-            // Simulate API call
-            setTimeout(() => {
-                localStorage.setItem('medcareUser', JSON.stringify(updatedData));
-
-                // Update UI elements immediately
-                if (window.showToast) {
-                    showToast('Profile updated successfully!', 'success');
-                }
-
-                document.getElementById('profileNameTitle').textContent = `${updatedData.firstName} ${updatedData.lastName}`;
-                document.getElementById('profileEmailSubtitle').innerHTML = `<i class="ph-bold ph-envelope-simple"></i> ${updatedData.email}`;
-
-                // Update global nav if exists
-                const navName = document.getElementById('navUserName');
-                if (navName) navName.textContent = `${updatedData.firstName} ${updatedData.lastName}`;
-
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-            }, 1000);
-        });
-    </script>
     <script src="js/script.js"></script>
 </body>
 

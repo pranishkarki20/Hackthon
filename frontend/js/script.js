@@ -58,6 +58,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // turn it on initially if mouse is already in frame
     flare.style.opacity = '1';
 
+    // 0a. Scroll progress indicator
+    let progressBar = document.querySelector('.scroll-progress');
+    if (!progressBar) {
+        progressBar = document.createElement('div');
+        progressBar.className = 'scroll-progress';
+        document.body.appendChild(progressBar);
+    }
+
+    const updateScrollProgress = () => {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+        progressBar.style.width = `${Math.min(100, Math.max(0, ratio))}%`;
+    };
+    window.addEventListener('scroll', updateScrollProgress);
+    updateScrollProgress();
+
     // 0b. Magnetic Buttons Effect
     const magneticBtns = document.querySelectorAll('.btn-primary, .btn-secondary, .logo');
     magneticBtns.forEach(btn => {
@@ -106,6 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. Intersection Observer for Scroll Animations
     const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    animatedElements.forEach((el, index) => {
+        el.style.transitionDelay = `${Math.min(index * 0.03, 0.18)}s`;
+    });
 
     if (animatedElements.length > 0) {
         const observerOptions = {
@@ -180,6 +199,212 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // 4. UX Enhancements: smooth section scroll, form validation, password strength
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href === '#') return;
+            const target = document.querySelector(href);
+            if (!target) return;
+
+            e.preventDefault();
+            const headerOffset = document.querySelector('header')?.offsetHeight || 0;
+            const top = target.getBoundingClientRect().top + window.pageYOffset - headerOffset - 10;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
+    });
+
+    // 0d. Hero parallax polish
+    const hero = document.querySelector('.hero');
+    const heroImageWrapper = document.querySelector('.hero-image-wrapper');
+    const floatingCard = document.querySelector('.floating-card');
+    if (hero && heroImageWrapper) {
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            const px = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+            const py = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+
+            heroImageWrapper.style.transform = `translate(${px * 10}px, ${py * 8}px)`;
+            if (floatingCard) {
+                floatingCard.style.transform = `translate(${px * -6}px, ${py * -4}px)`;
+            }
+        });
+
+        hero.addEventListener('mouseleave', () => {
+            heroImageWrapper.style.transform = '';
+            if (floatingCard) floatingCard.style.transform = '';
+        });
+    }
+
+    function ensureFeedbackNode(input) {
+        if (!input || input.type === 'checkbox' || input.type === 'hidden') return null;
+        let node = input.parentElement?.querySelector(`.input-feedback[data-for="${input.id}"]`);
+        if (!node) {
+            node = document.createElement('div');
+            node.className = 'input-feedback';
+            if (input.id) node.setAttribute('data-for', input.id);
+            input.insertAdjacentElement('afterend', node);
+        }
+        return node;
+    }
+
+    function setFieldFeedback(input, valid, message = '') {
+        if (!input || input.type === 'checkbox' || input.type === 'hidden') return;
+        const feedbackNode = ensureFeedbackNode(input);
+
+        // Suppress text feedback for login form to keep it minimalist as per user request
+        const isLoginForm = input.closest('#loginForm');
+        const displayMessage = isLoginForm ? '' : message;
+
+        input.classList.toggle('input-invalid', !valid);
+        input.classList.toggle('input-valid', valid && input.value.trim().length > 0);
+
+        if (!feedbackNode) return;
+        feedbackNode.textContent = displayMessage;
+        feedbackNode.classList.remove('error', 'success');
+        if (displayMessage) feedbackNode.classList.add(valid ? 'success' : 'error');
+    }
+
+    function validateField(input) {
+        if (!input || input.disabled || input.type === 'hidden') return { valid: true, message: '' };
+        if (input.type === 'checkbox') {
+            if (input.required && !input.checked) return { valid: false, message: 'This field is required.' };
+            return { valid: true, message: '' };
+        }
+
+        const rawValue = input.value || '';
+        const value = rawValue.trim();
+        const label = input.getAttribute('aria-label') || input.name || input.id || 'This field';
+
+        if (input.required && value.length === 0) {
+            return { valid: false, message: `${label} is required.` };
+        }
+
+        if (value.length === 0) return { valid: true, message: '' };
+
+        if (input.type === 'email') {
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+            return emailOk ? { valid: true, message: 'Looks good.' } : { valid: false, message: 'Enter a valid email address.' };
+        }
+
+        if (input.type === 'password') {
+            const hasLower = /[a-z]/.test(value);
+            const hasUpper = /[A-Z]/.test(value);
+            const hasDigit = /\d/.test(value);
+            const minLen = value.length >= 8;
+            const passOk = hasLower && hasUpper && hasDigit && minLen;
+            return passOk
+                ? { valid: true, message: 'Strong enough.' }
+                : { valid: false, message: 'Use 8+ chars with upper, lower, and number.' };
+        }
+
+        const looksLikeName = ['fname', 'lname', 'profFirst', 'profLast'].includes(input.id);
+        if (looksLikeName && value.length < 2) {
+            return { valid: false, message: 'Please enter at least 2 characters.' };
+        }
+
+        return { valid: true, message: '' };
+    }
+
+    function validateFormWithInlineFeedback(form) {
+        if (!form) return true;
+        const fields = Array.from(form.querySelectorAll('input, select, textarea'));
+        let firstInvalid = null;
+        let valid = true;
+
+        fields.forEach(field => {
+            const result = validateField(field);
+            setFieldFeedback(field, result.valid, result.message);
+            if (!result.valid && !firstInvalid) firstInvalid = field;
+            if (!result.valid) valid = false;
+        });
+
+        if (!valid && firstInvalid && typeof firstInvalid.focus === 'function') firstInvalid.focus();
+        return valid;
+    }
+
+    function initInlineValidationForForm(form) {
+        if (!form) return;
+        const fields = form.querySelectorAll('input, select, textarea');
+        fields.forEach(field => {
+            if (field.type === 'checkbox' || field.type === 'hidden') return;
+            ensureFeedbackNode(field);
+            field.addEventListener('blur', () => {
+                const result = validateField(field);
+                setFieldFeedback(field, result.valid, result.message);
+            });
+            field.addEventListener('input', () => {
+                const result = validateField(field);
+                if (field.classList.contains('input-invalid') || field.classList.contains('input-valid')) {
+                    setFieldFeedback(field, result.valid, result.message);
+                }
+            });
+        });
+    }
+
+    function scorePassword(password) {
+        let score = 0;
+        if (password.length >= 8) score++;
+        if (password.length >= 12) score++;
+        if (/[a-z]/.test(password)) score++;
+        if (/[A-Z]/.test(password)) score++;
+        if (/\d/.test(password)) score++;
+        if (/[^A-Za-z0-9]/.test(password)) score++;
+        return Math.min(score, 5);
+    }
+
+    function initPasswordStrengthMeter(passwordInput) {
+        if (!passwordInput || passwordInput.dataset.strengthReady === 'true') return;
+        passwordInput.dataset.strengthReady = 'true';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'password-strength';
+        wrapper.innerHTML = `
+            <div class="password-strength-track">
+                <div class="password-strength-bar"></div>
+            </div>
+            <div class="password-strength-label">Strength: Empty</div>
+        `;
+        passwordInput.insertAdjacentElement('afterend', wrapper);
+
+        const bar = wrapper.querySelector('.password-strength-bar');
+        const label = wrapper.querySelector('.password-strength-label');
+        const strengthMeta = [
+            { text: 'Very Weak', color: '#EF4444', width: 20 },
+            { text: 'Weak', color: '#F97316', width: 35 },
+            { text: 'Fair', color: '#F59E0B', width: 55 },
+            { text: 'Good', color: '#22C55E', width: 75 },
+            { text: 'Strong', color: '#10B981', width: 100 }
+        ];
+
+        const render = () => {
+            const value = passwordInput.value || '';
+            if (!value) {
+                bar.style.width = '0%';
+                bar.style.backgroundColor = '#CBD5E1';
+                label.textContent = 'Strength: Empty';
+                return;
+            }
+
+            const score = scorePassword(value);
+            const index = Math.max(0, score - 1);
+            const meta = strengthMeta[index];
+            bar.style.width = `${meta.width}%`;
+            bar.style.backgroundColor = meta.color;
+            label.textContent = `Strength: ${meta.text}`;
+        };
+
+        passwordInput.addEventListener('input', render);
+        render();
+    }
+
+    document.querySelectorAll('#signupForm, #loginForm, #profileForm').forEach(form => {
+        initInlineValidationForForm(form);
+    });
+    document.querySelectorAll('#signupForm input[type="password"]').forEach(input => {
+        initPasswordStrengthMeter(input);
+    });
 
     // 4. Authentication & Simulated Backend User Management
     const defaultUser = { fname: 'John', lname: 'Doe', email: 'john.doe@example.com' };
@@ -289,6 +514,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!validateFormWithInlineFeedback(loginForm)) {
+                showToast('Please fix the highlighted fields.', 'error');
+                return;
+            }
             const emailInput = document.getElementById('email').value;
             const submitBtn = loginForm.querySelector('button[type="submit"]');
 
@@ -321,6 +550,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (signupForm) {
         signupForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!validateFormWithInlineFeedback(signupForm)) {
+                showToast('Please fix the highlighted fields.', 'error');
+                return;
+            }
             const fname = document.getElementById('fname').value;
             const lname = document.getElementById('lname').value;
             const email = document.getElementById('email').value;
@@ -345,6 +578,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (profileForm) {
         profileForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!validateFormWithInlineFeedback(profileForm)) {
+                showToast('Please correct invalid profile fields.', 'error');
+                return;
+            }
+            if (!window.confirm('Confirm update? Save these profile changes now?')) return;
             const submitBtn = profileForm.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
 
@@ -548,6 +786,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const action = actionNode.getAttribute('data-action');
 
             if (action === 'cancel-appointment') {
+                if (!window.confirm('Delete this appointment? This action cannot be undone.')) return;
                 const originalContent = actionNode.innerHTML;
                 actionNode.innerHTML = '<span class="loading" style="border-top-color: var(--text-main);"></span> Canceling...';
                 actionNode.disabled = true;
@@ -586,6 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (action === 'reschedule-appointment') {
+                if (!window.confirm('Send update request to reschedule this appointment?')) return;
                 actionNode.innerHTML = '<i class="ph-bold ph-check"></i> Request Sent';
                 actionNode.disabled = true;
                 showToast('Reschedule request sent to clinic.', 'success');
@@ -688,6 +928,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800);
         }
 
+        function liveFilterResults(queryStr, locStr) {
+            const query = (queryStr || '').toLowerCase();
+            const cards = resultsGrid.querySelectorAll('.card');
+            let matchCount = 0;
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'block';
+                    matchCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            resultsTitle.innerHTML = `Search Results for "${queryStr || 'All Specialties'}"`;
+            if (locStr) resultsTitle.innerHTML += ` in ${locStr.toUpperCase()}`;
+            resultsCount.textContent = `Showing ${matchCount} result${matchCount !== 1 ? 's' : ''}`;
+        }
+
         if (searchBtn) {
             searchBtn.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -701,6 +961,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.innerHTML = originalText;
                     this.disabled = false;
                 }, 1000);
+            });
+        }
+
+        if (searchInput) {
+            let liveFilterTimer = null;
+            searchInput.addEventListener('input', () => {
+                if (liveFilterTimer) clearTimeout(liveFilterTimer);
+                liveFilterTimer = setTimeout(() => {
+                    liveFilterResults(searchInput.value, locationSelect?.value || '');
+                }, 150);
+            });
+        }
+
+        if (locationSelect) {
+            locationSelect.addEventListener('change', () => {
+                liveFilterResults(searchInput?.value || '', locationSelect.value);
             });
         }
 
@@ -778,6 +1054,72 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setTimeout(type, 1000);
+    }
+
+    // 12. Interactive Tabs
+    document.querySelectorAll('.tab-link').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const container = tab.closest('.tabs-container');
+            const targetId = tab.getAttribute('data-tab');
+
+            // Reset tabs
+            container.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            // Activate target
+            tab.classList.add('active');
+            const target = container.querySelector(`#${targetId}`);
+            if (target) target.classList.add('active');
+        });
+    });
+
+    // 13. Interactive Rating
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', () => {
+            const index = star.getAttribute('data-index');
+            const parent = star.parentElement;
+
+            parent.querySelectorAll('.rating-star').forEach(s => {
+                const sIndex = s.getAttribute('data-index');
+                s.classList.toggle('ph-fill', sIndex <= index);
+                s.classList.toggle('ph', sIndex > index);
+                s.classList.toggle('active', sIndex <= index);
+            });
+
+            if (window.showToast) showToast(`Rated ${index} stars!`, 'success');
+        });
+    });
+
+    // 14. FAB Menu Toggle
+    const fabMain = document.querySelector('.fab-main');
+    if (fabMain) {
+        fabMain.addEventListener('click', () => {
+            fabMain.parentElement.classList.toggle('active');
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!fabMain.parentElement.contains(e.target)) {
+                fabMain.parentElement.classList.remove('active');
+            }
+        });
+    }
+
+    // 15. Mini Chart Animation
+    const charts = document.querySelectorAll('.chart-bar');
+    if (charts.length > 0) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const h = bar.getAttribute('data-height');
+                    bar.style.height = h + '%';
+                    observer.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        charts.forEach(bar => observer.observe(bar));
     }
 
     // run nav update each load
