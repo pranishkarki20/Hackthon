@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - MedCare</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-cross"></i></div>
+                MedCare
+            </a>
+            <nav style="flex: 1; display: flex; justify-content: flex-end;">
+                <p style="margin: 0; color: var(--text-main); font-weight: 500;">
+                    Already have an account? <a href="login.html" style="font-weight: 700; margin-left: 0.5rem;">Sign
+                        In</a>
+                </p>
+            </nav>
+        </div>
+    </header>
+
+    <main class="auth-container">
+        <div class="form-card" style="max-width: 600px;">
+            <div class="form-header">
+                <div class="logo-icon" style="margin: 0 auto 1.5rem;">
+                    <i class="ph-fill ph-user-plus"></i>
+                </div>
+                <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Create an Account</h2>
+                <p>Join the future of healthcare today.</p>
+            </div>
+
+            <form id="signupForm" action="dashboard.html" method="GET">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label for="fname" class="form-label">First Name</label>
+                        <input type="text" id="fname" class="form-input" placeholder="John" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lname" class="form-label">Last Name</label>
+                        <input type="text" id="lname" class="form-input" placeholder="Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" id="email" class="form-input" placeholder="john.doe@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 2rem;">
+                    <label class="form-checkbox" style="align-items: flex-start;">
+                        <input type="checkbox" required style="margin-top: 4px;">
+                        <span style="font-size: 0.875rem; color: var(--text-muted); line-height: 1.4;">
+                            I accept the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>. MedCare is
+                            fully certified in handling your sensitive patient data via HIPAA compliance.
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary form-submit">
+                    Complete Registration <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p>Secured by MedCare Enterprise Grade Encryption <i class="ph-fill ph-shield-check"
+                        style="color: var(--secondary); vertical-align: middle;"></i></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

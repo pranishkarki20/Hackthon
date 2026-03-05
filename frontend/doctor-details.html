@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Sarah Johnson - MedCare</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-cross"></i></div>
+                MedCare
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="search.html" class="active">Find Doctors</a>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+            <div class="header-actions">
+                <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar"
+                        style="width: 40px; height: 40px; border: 2px solid var(--primary);">
+                    <span id="navUserName">John Doe</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="breadcrumbs animate-on-scroll">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <a href="search.html">Find Doctors</a>
+            <span>/</span>
+            <span style="color: var(--text-main);">Dr. Sarah Johnson</span>
+        </div>
+
+        <div class="profile-header-card animate-on-scroll">
+            <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400&h=400"
+                alt="Dr. Sarah Johnson" class="avatar" style="width: 150px; height: 150px;">
+            <div style="flex: 1;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 0.25rem;">Dr. Sarah Johnson</h1>
+                <p class="text-primary" style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.5rem;">Lead
+                    Cardiologist, MD</p>
+                <div class="flex align-center gap-4 mb-4" style="color: var(--text-muted);">
+                    <span class="flex align-center gap-1 text-warning" style="color: var(--accent);"><i
+                            class="ph-fill ph-star"></i> 4.9</span>
+                    <span><i class="ph-fill ph-stethoscope"></i> 15 Years Exp.</span>
+                    <span><i class="ph-fill ph-map-pin"></i> New York City Center</span>
+                </div>
+                <div class="flex gap-2">
+                    <span class="badge"
+                        style="background: var(--primary-light); color: var(--primary-dark);">Cardiology</span>
+                    <span class="badge" style="background: var(--primary-light); color: var(--primary-dark);">Heart
+                        Transplant</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="details-grid animate-on-scroll">
+            <div class="main-content">
+                <section class="card mb-6" style="padding: 2.5rem;">
+                    <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 1.5rem;">About Dr. Johnson</h2>
+                    <p class="mb-4">Dr. Sarah Johnson is a board-certified cardiologist specializing in structural heart
+                        disease and advanced echocardiography. With over 15 years of precise clinical experience, she
+                        brings a wealth of cutting-edge knowledge to patient care at MedCare.</p>
+                    <p>Her approach emphasizes preventative medicine, utilizing state-of-the-art diagnostic imaging to
+                        detect cardiovascular diseases early, ensuring the highest standard of health and longevity for
+                        her patients.</p>
+                </section>
+
+                </section>
+
+                <section class="card animate-on-scroll" style="padding: 2.5rem;">
+                    <div class="flex" style="justify-content: space-between; margin-bottom: 2rem;">
+                        <h2 class="section-title" style="font-size: 1.5rem; margin: 0;">Patient Reviews</h2>
+                        <a href="#" class="btn btn-outline">Write a Review</a>
+                    </div>
+
+                    <div class="review-item mb-6 pb-6" style="border-bottom: 1px solid var(--border-light);">
+                        <div class="flex justify-between align-center mb-2">
+                            <div class="flex align-center gap-2">
+                                <img src="https://i.pravatar.cc/150?u=1" class="avatar"
+                                    style="width: 32px; height: 32px;">
+                                <span style="font-weight: 600;">Michael R.</span>
+                            </div>
+                            <span class="text-warning"><i class="ph-fill ph-star"></i> 5.0</span>
+                        </div>
+                        <p class="text-muted" style="font-size: 0.95rem;">"Dr. Johnson is incredibly thorough and
+                            empathetic. She took the time to explain my heart health in a way I could actually
+                            understand. Highly recommend!"</p>
+                    </div>
+
+                    <div class="review-item">
+                        <div class="flex justify-between align-center mb-2">
+                            <div class="flex align-center gap-2">
+                                <img src="https://i.pravatar.cc/150?u=2" class="avatar"
+                                    style="width: 32px; height: 32px;">
+                                <span style="font-weight: 600;">Amanda L.</span>
+                            </div>
+                            <span class="text-warning"><i class="ph-fill ph-star"></i> 4.5</span>
+                        </div>
+                        <p class="text-muted" style="font-size: 0.95rem;">"Great experience overall. The wait time was
+                            minimal and the video consultation was seamless. Very professional staff."</p>
+                    </div>
+                </section>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-widget">
+                    <h3 style="margin-bottom: 0.5rem; font-size: 1.25rem;">Book Appointment</h3>
+                    <p class="text-muted mb-4" style="font-size: 0.875rem;">Select your preferred consultation method to
+                        view availability.</p>
+
+                    <div class="flex gap-2 mb-4">
+                        <button class="btn btn-primary" style="flex: 1; padding: 0.5rem;"><i
+                                class="ph-fill ph-video-camera"></i> Video</button>
+                        <button class="btn btn-outline" style="flex: 1; padding: 0.5rem;"><i
+                                class="ph-fill ph-buildings"></i> In-Clinic</button>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label class="form-label">Available Dates</label>
+                        <select class="form-input">
+                            <option>Tomorrow, Oct 24</option>
+                            <option>Friday, Oct 25</option>
+                            <option>Monday, Oct 28</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-6">
+                        <label class="form-label">Available Times</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;">
+                            <button class="btn btn-outline" style="padding: 0.5rem 0;">09:00 AM</button>
+                            <button class="btn btn-outline" style="padding: 0.5rem 0;">10:30 AM</button>
+                            <button class="btn btn-primary"
+                                style="padding: 0.5rem 0; box-shadow: var(--shadow-glow);">11:00 AM</button>
+                            <button class="btn btn-outline" style="padding: 0.5rem 0;">02:00 PM</button>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" id="confirmBookingBtn" style="width: 100%; padding: 1rem;"><i
+                            class="ph-bold ph-calendar-check"></i> Confirm Booking</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('confirmBookingBtn').addEventListener('click', function () {
+            const btn = this;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span class="loading" style="border-top-color: white;"></span> Booking...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                showToast('Appointment booked successfully!', 'success');
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+            }, 1000);
+        });
+    </script>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

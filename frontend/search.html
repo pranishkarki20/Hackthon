@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Doctors - MedCare</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-cross"></i></div>
+                MedCare
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="search.html" class="active">Find Doctors</a>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+            <div class="header-actions">
+                <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar"
+                        style="width: 40px; height: 40px; border: 2px solid var(--primary);">
+                    <span id="navUserName">John Doe</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="search-hero animate-on-scroll">
+            <h1 style="font-size: 3rem; font-weight: 800; letter-spacing: -0.04em;">Find Your Specialist</h1>
+            <p style="font-size: 1.125rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Search thousands of top-tier
+                verified medical professionals near you.</p>
+
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search by name, specialty, or symptoms...">
+                <select id="locationSelect">
+                    <option value="">All Locations</option>
+                    <option value="ny">New York, NY</option>
+                    <option value="ca">Los Angeles, CA</option>
+                    <option value="tx">Austin, TX</option>
+                </select>
+                <button id="mainSearchBtn" class="btn btn-primary"
+                    style="border-radius: var(--radius-full); padding-inline: 2rem;">
+                    <i class="ph-bold ph-magnifying-glass"></i> Search
+                </button>
+            </div>
+
+            <div class="flex gap-2" style="justify-content: center; margin-top: 1.5rem; flex-wrap: wrap;">
+                <span class="badge filter-badge"
+                    style="background: rgba(255,255,255,0.2); color: white; cursor: pointer; transition: all 0.3s ease;">Cardiology</span>
+                <span class="badge filter-badge"
+                    style="background: rgba(255,255,255,0.2); color: white; cursor: pointer; transition: all 0.3s ease;">Dermatology</span>
+                <span class="badge filter-badge"
+                    style="background: rgba(255,255,255,0.2); color: white; cursor: pointer; transition: all 0.3s ease;">Pediatrics</span>
+                <span class="badge filter-badge"
+                    style="background: rgba(255,255,255,0.2); color: white; cursor: pointer; transition: all 0.3s ease;">Orthopedics</span>
+            </div>
+        </section>
+
+        <section class="section animate-on-scroll" id="resultsSection">
+            <div class="flex" style="justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem;" id="resultsTitle">Recommended Specialists</h2>
+                <span class="text-muted" id="resultsCount">Showing 24 results</span>
+            </div>
+
+            <div class="card-grid" id="searchResultsGrid">
+                <a href="doctor-details.html" class="card" style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Sarah Johnson</h3>
+                        <p class="text-primary font-weight-600 mb-2">Cardiologist, MD</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.9</span>
+                            <span class="text-muted">&bull; 124 Reviews</span>
+                            <span class="text-muted">&bull; 1.2mi</span>
+                        </div>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Michael Chen</h3>
+                        <p class="text-primary font-weight-600 mb-2">Dermatologist, FAAD</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 4.8</span>
+                            <span class="text-muted">&bull; 89 Reviews</span>
+                            <span class="text-muted">&bull; 3.0mi</span>
+                        </div>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+
+                <a href="#" class="card" style="text-decoration: none; display: block; padding: 0;">
+                    <img src="https://images.unsplash.com/photo-1594824432258-f9116e036e78?auto=format&fit=crop&q=80&w=400&h=300"
+                        alt="Doctor"
+                        style="width: 100%; height: 200px; object-fit: cover; border-top-left-radius: var(--radius-md); border-top-right-radius: var(--radius-md);">
+                    <div style="padding: 1.5rem;">
+                        <h3 class="card-title text-main">Dr. Emily Davis</h3>
+                        <p class="text-primary font-weight-600 mb-2">Pediatrician, MD</p>
+                        <div class="flex align-center gap-2 mb-4" style="font-size: 0.875rem;">
+                            <span class="flex align-center gap-2 text-warning" style="color: var(--accent);"><i
+                                    class="ph-fill ph-star"></i> 5.0</span>
+                            <span class="text-muted">&bull; 213 Reviews</span>
+                            <span class="text-muted">&bull; 4.5mi</span>
+                        </div>
+                        <div class="btn btn-outline" style="width: 100%;"><i class="ph ph-calendar-plus"></i> View
+                            Availability</div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="flex" style="justify-content: center; margin-top: 4rem;">
+                <button id="loadMoreBtn" class="btn btn-secondary text-main" style="padding-inline: 3rem;"><i
+                        class="ph-bold ph-arrows-down"></i> Load More Specialists</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

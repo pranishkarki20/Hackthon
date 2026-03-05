@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - MedCare</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-cross"></i></div>
+                MedCare
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="search.html">Find Doctors</a>
+                <a href="dashboard.html">Dashboard</a>
+            </nav>
+            <div class="header-actions">
+                <a href="profile.html" class="flex align-center gap-2 text-main active"
+                    style="font-weight: 600; color: var(--primary);">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar"
+                        style="width: 40px; height: 40px; border: 2px solid var(--primary);">
+                    <span id="navUserName">John Doe</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="details-grid animate-on-scroll">
+            <div class="main-content">
+                <div class="profile-header-card">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="John Doe" class="avatar">
+                    <div style="flex: 1;">
+                        <h1 id="profileNameTitle" style="font-size: 2rem; margin-bottom: 0.25rem;">John Doe</h1>
+                        <p id="profileEmailSubtitle" class="text-muted flex align-center gap-2 mb-4"><i
+                                class="ph-bold ph-envelope-simple"></i>
+                            john.doe@example.com</p>
+                        <div class="flex gap-4">
+                            <button class="btn btn-primary"><i class="ph-bold ph-pencil-simple"></i> Edit
+                                Profile</button>
+                            <button id="logoutBtn" class="btn btn-secondary text-danger"
+                                style="color: var(--danger);"><i class="ph-bold ph-sign-out"></i> Log Out</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-6" style="padding: 2rem;">
+                    <h2 class="section-title" style="font-size: 1.5rem; margin-bottom: 2rem;">Personal Information</h2>
+                    <form id="profileForm">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                            <div class="form-group mb-0">
+                                <label class="form-label">First Name</label>
+                                <input type="text" id="profFirst" class="form-input" value="John">
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" id="profLast" class="form-input" value="Doe">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 2rem;">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" id="profEmail" class="form-input" value="john.doe@example.com">
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                            <div class="form-group mb-0">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-input" value="+1 (555) 123-4567">
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">Date of Birth</label>
+                                <input type="date" class="form-input" value="1985-10-15">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Home Address</label>
+                            <input type="text" class="form-input"
+                                value="1234 Healthcare Blvd, Suite 100, New York, NY 10001">
+                        </div>
+
+                        <div class="flex" style="justify-content: flex-end; margin-top: 2rem;">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-widget mb-6">
+                    <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem;">Settings & Preferences</h3>
+
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin-bottom: 1rem;">
+                            <a href="#" class="flex align-center gap-4 text-main"
+                                style="padding: 0.75rem; border-radius: var(--radius-sm); transition: var(--transition-fast); text-decoration: none; background: var(--primary-light); color: var(--primary); font-weight: 600;">
+                                <i class="ph-bold ph-user-circle" style="font-size: 1.25rem;"></i> Account Settings
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 1rem;">
+                            <a href="#" class="flex align-center gap-4 text-main"
+                                style="padding: 0.75rem; border-radius: var(--radius-sm); transition: var(--transition-fast); text-decoration: none;">
+                                <i class="ph-bold ph-bell" style="font-size: 1.25rem;"></i> Notifications
+                            </a>
+                        </li>
+                        <li style="margin-bottom: 1rem;">
+                            <a href="#" class="flex align-center gap-4 text-main"
+                                style="padding: 0.75rem; border-radius: var(--radius-sm); transition: var(--transition-fast); text-decoration: none;">
+                                <i class="ph-bold ph-lock-key" style="font-size: 1.25rem;"></i> Security & Privacy
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="flex align-center gap-4 text-main"
+                                style="padding: 0.75rem; border-radius: var(--radius-sm); transition: var(--transition-fast); text-decoration: none;">
+                                <i class="ph-bold ph-credit-card" style="font-size: 1.25rem;"></i> Payment Methods
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const btn = this.querySelector('button[type="submit"]');
+            const originalHTML = btn.innerHTML;
+
+            btn.innerHTML = '<span class="loading" style="border-top-color: white;"></span> Saving...';
+            btn.disabled = true;
+
+            const updatedData = {
+                firstName: document.getElementById('profFirst').value,
+                lastName: document.getElementById('profLast').value,
+                email: document.getElementById('profEmail').value
+            };
+
+            // Simulate API call
+            setTimeout(() => {
+                localStorage.setItem('medcareUser', JSON.stringify(updatedData));
+
+                // Update UI elements immediately
+                if (window.showToast) {
+                    showToast('Profile updated successfully!', 'success');
+                }
+
+                document.getElementById('profileNameTitle').textContent = `${updatedData.firstName} ${updatedData.lastName}`;
+                document.getElementById('profileEmailSubtitle').innerHTML = `<i class="ph-bold ph-envelope-simple"></i> ${updatedData.email}`;
+
+                // Update global nav if exists
+                const navName = document.getElementById('navUserName');
+                if (navName) navName.textContent = `${updatedData.firstName} ${updatedData.lastName}`;
+
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }, 1000);
+        });
+    </script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>

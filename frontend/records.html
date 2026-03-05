@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records - MedCare</title>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-cross"></i></div>
+                MedCare
+            </a>
+            <nav>
+                <a href="index.html">Home</a>
+                <a href="search.html">Find Doctors</a>
+                <a href="dashboard.html" class="active">Dashboard</a>
+            </nav>
+            <div class="header-actions">
+                <a href="profile.html" class="flex align-center gap-2 text-main" style="font-weight: 600;">
+                    <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="Profile" class="avatar"
+                        style="width: 40px; height: 40px; border: 2px solid var(--primary);">
+                    <span id="navUserName">John Doe</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="breadcrumbs animate-on-scroll">
+            <a href="index.html">Home</a>
+            <span>/</span>
+            <a href="dashboard.html">Dashboard</a>
+            <span>/</span>
+            <span style="color: var(--text-main);">Medical Records</span>
+        </div>
+
+        <div class="dashboard-header animate-on-scroll">
+            <div>
+                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Medical Records</h1>
+                <p class="section-subtitle">Securely access and manage your medical history, prescriptions, and lab
+                    results.</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="btn btn-outline"><i class="ph-bold ph-download-simple"></i> Download All</button>
+                <button class="btn btn-primary"><i class="ph-bold ph-upload-simple"></i> Upload Record</button>
+            </div>
+        </div>
+
+        <div class="card mb-6 animate-on-scroll">
+            <div class="flex" style="justify-content: space-between; margin-bottom: 2rem; align-items: center;">
+                <h2 style="font-size: 1.25rem;">Recent Lab Results</h2>
+                <div class="search-bar" style="max-width: 300px; padding: 0.5rem 1rem;">
+                    <i class="ph ph-magnifying-glass text-muted"></i>
+                    <input type="text" placeholder="Search records..."
+                        style="padding: 0.5rem; border: none; outline: none; background: transparent;">
+                </div>
+            </div>
+
+            <div class="list-card mb-4" style="background: var(--bg-body);">
+                <div class="list-info">
+                    <div class="stat-icon" style="background: var(--primary-light); color: var(--primary-dark);">
+                        <i class="ph-fill ph-file-text"></i>
+                    </div>
+                    <div class="list-text">
+                        <h4>Annual Blood Panel</h4>
+                        <p>Oct 12, 2026 &bull; Diagnostic Labs Inc.</p>
+                    </div>
+                </div>
+                <div class="list-actions">
+                    <span class="badge"
+                        style="background: var(--secondary-light); color: var(--secondary-dark); margin-right: 1rem;">Normal</span>
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View Details</button>
+                </div>
+            </div>
+
+            <div class="list-card mb-4" style="background: var(--bg-body);">
+                <div class="list-info">
+                    <div class="stat-icon" style="background: var(--primary-light); color: var(--primary-dark);">
+                        <i class="ph-fill ph-file-text"></i>
+                    </div>
+                    <div class="list-text">
+                        <h4>COVID-19 Vaccination Record</h4>
+                        <p>Aug 20, 2026 &bull; MedCare Health Center</p>
+                    </div>
+                </div>
+                <div class="list-actions">
+                    <span class="badge"
+                        style="background: var(--secondary-light); color: var(--secondary-dark); margin-right: 1rem;">Verified</span>
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View PDF</button>
+                </div>
+            </div>
+
+            <div class="list-card" style="background: var(--bg-body);">
+                <div class="list-info">
+                    <div class="stat-icon" style="background: var(--primary-light); color: var(--primary-dark);">
+                        <i class="ph-fill ph-file-text"></i>
+                    </div>
+                    <div class="list-text">
+                        <h4>X-Ray Report (Chest)</h4>
+                        <p>June 05, 2026 &bull; City Medical Imaging</p>
+                    </div>
+                </div>
+                <div class="list-actions">
+                    <span class="badge"
+                        style="background: var(--secondary-light); color: var(--secondary-dark); margin-right: 1rem;">Clear</span>
+                    <button class="btn btn-outline" style="padding: 0.5rem 1rem;">View Report</button>
+                </div>
+            </div>
+        </div>
+
+        <section class="animate-on-scroll">
+            <h2 style="font-size: 1.25rem; margin-bottom: 2rem;">Current Prescriptions</h2>
+            <div class="card-grid">
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;">Lisinopril 10mg</h3>
+                    <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">For Hypertension &bull; Once
+                        daily</p>
+                    <div class="flex justify-between align-center"
+                        style="border-top: 1px solid var(--border-light); padding-top: 1rem; margin-top: 1rem;">
+                        <span style="font-size: 0.875rem; color: var(--secondary-dark); font-weight: 600;">Active</span>
+                        <a href="#" class="text-primary" style="font-size: 0.875rem; font-weight: 600;">Refill
+                            Request</a>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 2rem;">
+                    <h3 style="font-size: 1.125rem; margin-bottom: 0.5rem;">Atorvastatin 20mg</h3>
+                    <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">For Cholesterol &bull; At
+                        bedtime</p>
+                    <div class="flex justify-between align-center"
+                        style="border-top: 1px solid var(--border-light); padding-top: 1rem; margin-top: 1rem;">
+                        <span style="font-size: 0.875rem; color: var(--secondary-dark); font-weight: 600;">Active</span>
+                        <a href="#" class="text-primary" style="font-size: 0.875rem; font-weight: 600;">Refill
+                            Request</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>
